@@ -27,15 +27,16 @@ body {
 }
 
 .container {
+    position: relative;
     width: 100%;
     height: auto;
     min-height: 500px;
-    max-width: 500px;
-    min-width: 250px;
+    max-width: 600px;
+    min-width: 280px;
     background: #f1f5f8;
     background-image: url("parchment.jpeg");
     background-size: cover;
-    border-radius: 20px;
+    border-radius: 10px;
     box-shadow: 5px 5px 5px black;
     padding: 1rem;
 }
@@ -74,7 +75,7 @@ body {
 
 .form-input {
     background-color: transparent;
-    padding: 0.7rem;
+    padding: 0.7rem 0.5rem  0.2rem;
     border-bottom-right-radius: 15px 3px;
     border-bottom-left-radius: 3px 15px;
     border: solid 3px transparent;
@@ -129,3 +130,12 @@ body {
 .todoList {
     text-align: left;
 }
+
+.todoList li {
+    padding: 0.5rem;
+}
+/* .todoList li::marker {
+    position: absolute;
+    left: 25px;
+    color: red;
+} */
