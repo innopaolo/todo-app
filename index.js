@@ -54,4 +54,35 @@
         todoListArray.splice(taskIndex, 1);
         console.log(todoListArray);
     }
+
+
+    // Toggle light and dark theme
+    const themeBtn = document.getElementById("theme-btn");
+    const container = document.querySelector(".container");
+    const formInput = document.querySelector(".form-input");
+
+    themeBtn.addEventListener("click", () => {
+        
+        // Default class "fa-moon" switches to "fa-sun" on toggle
+        themeBtn.classList.toggle("fa-sun");
+
+        if (themeBtn.classList.contains("fa-sun")) {
+
+            themeBtn.style.backgroundColor = "#793b1b";
+            themeBtn.style.color = "white";
+
+            document.body.classList.add("changeThemeBody");
+            container.classList.add("changeThemeContainer");
+            formInput.classList.add("changeThemeInput");
+
+        } else {
+
+            themeBtn.style.backgroundColor = "#e6d7a9";
+            themeBtn.style.color = "#494a4b";
+
+            document.body.classList.remove("changeThemeBody");
+            container.classList.remove("changeThemeContainer");
+            formInput.classList.remove("changeThemeInput");
+        }
+    });
 })();
