@@ -22,15 +22,14 @@
         input.value = "";
     });
 
- 
 
     function appendToContainer(todoTask, itemId) {
         const li = document.createElement("li");
         const div = document.createElement("div")
 
-        // Create icon buttons for deleting and importance setting
+        // Create delete and flag icons + set data-id (used for click event)
         div.classList.add("icon-buttons");
-        div.innerHTML = "<img src='flag-solid.svg'><img src='trash-can-solid.svg'>";
+        div.innerHTML = `<img id='flag' data-id='${itemId}' src='flag-solid.svg'><img id='trash'  class='tooltip-d' data-id='${itemId}' src='trash-can-solid.svg'>`;
 
         // Create a separate element for the task text
         const taskText = document.createElement("span");
@@ -129,15 +128,36 @@
     ul.addEventListener("click", e => {
         
         let id = e.target.getAttribute("data-id");
-        // removeFromContainer(id);
-        // removeFromArray(id);
 
         // No response if blank area clicked
         if (!id) return
         
-        
         if (e.target.tagName === "SPAN") {
             openModal();
+            return;
+        }
+
+        if (e.target.tagName === "IMG") {
+            const icon = e.target.getAttribute("id");
+            if (icon === "flag") {
+                console.log("flag");
+            } else {
+                const closestLi = e.target.closest("li");
+
+                // Add a strikethrough and require two taps to delete
+                if (closestLi.classList.contains("readyForDeletion")) {
+                    removeFromContainer(id);
+                    removeFromArray(id);
+                } else {
+                    closestLi.classList.add("readyForDeletion")
+
+                    // Remove strikethrough if not confirmed after 6 seconds
+                    setTimeout(() => {
+                        closestLi.classList.remove("readyForDeletion");
+                    }, 6000);
+                }
+                
+            }
         }
       
     });
@@ -153,6 +173,5 @@
     });
 
 
-    
 
 })();

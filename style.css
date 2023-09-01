@@ -144,8 +144,15 @@ body {
 
 .icon-buttons {
     display: flex;
-    gap: 18px;
+    gap: 1em;
 }
+.icon-buttons img:nth-child(1) {
+    cursor: pointer;
+}
+.icon-buttons img:nth-child(2) {
+    cursor: pointer;
+}
+
 
 #theme-btn {
     position: absolute;
@@ -290,6 +297,17 @@ body {
     }
 }
 
+/* Creates a wavy strikethrough on task before confirmed deletion */
+.readyForDeletion {
+    text-decoration: line-through wavy orangered;
+}
+.readyForDeletion::after {
+    content: "tap again to delete!";
+    font-size: small;
+    position: absolute;
+    bottom: -8px;
+    right: 0;
+}
 
 /* Dark mode style change */
 .changeThemeBody {
