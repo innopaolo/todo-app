@@ -140,23 +140,49 @@
         if (e.target.tagName === "IMG") {
             const icon = e.target.getAttribute("id");
             if (icon === "flag") {
-                console.log("flag");
+
+                // Target the parent div of flag then the div's sibling which is the text
+                const closestDiv = e.target.closest("div");
+                const closestSpan = closestDiv.previousElementSibling;
+
+                // Targets the task and checks if there is already a generated priority flag
+                const childSpanExists = closestSpan.querySelector("span");
+
+                if (childSpanExists) {
+                    if (childSpanExists.style.color === "orangered") {
+                        // If the color is already set to high priority, remove the span
+                        childSpanExists.remove();
+                    } else {
+                        // Otherwise, change the color to high priority
+                        childSpanExists.style.color = "orangered";
+                    }
+                } else {
+                    // If the span doesn't exist, create and append it
+                    const span = document.createElement("span");
+                    span.style.color = "#1a82a9"; // Initial color for medium priority
+                    span.style.paddingLeft = "1rem";
+                    span.textContent = "!!!important";
+                    closestSpan.appendChild(span);
+                }
+
             } else {
                 const closestLi = e.target.closest("li");
 
                 // Add a strikethrough and require two taps to delete
                 if (closestLi.classList.contains("readyForDeletion")) {
+
                     removeFromContainer(id);
                     removeFromArray(id);
+
                 } else {
+
                     closestLi.classList.add("readyForDeletion")
 
                     // Remove strikethrough if not confirmed after 6 seconds
                     setTimeout(() => {
                         closestLi.classList.remove("readyForDeletion");
                     }, 6000);
-                }
-                
+                } 
             }
         }
       
