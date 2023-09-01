@@ -133,9 +133,18 @@ body {
 
 .todoList li {
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 0.5rem;
-    list-style-position: inside;
-    width: fit-content;
+}
+.todoList li span:hover {
+    cursor: pointer;
+}
+
+.icon-buttons {
+    display: flex;
+    gap: 18px;
 }
 
 #theme-btn {
@@ -161,6 +170,127 @@ body {
     100% { transform: translateX(0); }
 }
 
+
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+.modal-content {
+    position: relative;
+    background: linear-gradient(to bottom right, #ddc98f, #cecdcb);
+    background-color: #fff;
+    width: 80%;
+    max-width: 500px;
+    min-width: 300px;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: black;
+}
+
+.modal-content p {
+    margin-bottom: 0.8rem;
+}
+
+.close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    padding: 3px 5px 0;
+}
+.close:hover {
+    background-color: #ed9383;
+    border-radius: 4px;
+}
+
+.modal-form textarea {
+    background-color: antiquewhite;
+    padding: 0.7rem 0.5rem  0.2rem;
+    border-radius: 5px;
+    border: solid 3px #ed9383;
+    font-family: "Gochi Hand", cursive;
+    font-size: 1rem;
+    color: rgba(63, 62, 65, 0.7);
+    width: 90%;
+}
+.modal-form textarea:focus {
+    outline: none;
+    border: solid 3px red;
+}
+
+.date-label {
+    display: block;
+    margin: 1rem 0 0.4rem;
+}
+
+#dueDate {
+    background-color: antiquewhite;
+    border-radius: 4px;
+    padding: 0.2rem 0.4rem;
+    font-family: "Gochi Hand", cursive;
+    border: solid 3px #ed9383;
+    font-family: "Gochi Hand", cursive;
+    font-size: 1rem;
+    color: rgba(63, 62, 65, 0.7);
+}
+#dueDate:focus {
+    outline: none;
+    border: solid 3px red;
+}
+
+.modal-button {
+    position: relative;
+    display: block;
+    margin: 1.8rem auto 0;
+    padding: 0;
+    border: 0;
+    font-family: "Gochi Hand", cursive;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.modal-button span {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    transform: rotate(-20deg);
+    color: rgb(201, 55, 55);
+    font-weight: 900;
+    font-size: 1.2rem;
+    display: none;
+}
+
+.modal-button:hover span {
+    display: inline;
+}
+
+.modal-form img:hover {
+    animation: spin 3s linear infinite;
+    opacity: 0.6;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
 /* Dark mode style change */
 .changeThemeBody {
     color: #eee;
@@ -172,4 +302,9 @@ body {
 
 .changeThemeInput {
     color: antiquewhite;
+}
+
+.changeThemeModal {
+    background-image: url("modal-bg-dark.jpg");
+    color: #eee;
 }
