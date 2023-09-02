@@ -249,8 +249,9 @@
                     // If the span doesn't exist, create and append it
                     const span = document.createElement("span");
                     span.style.color = "#1a82a9"; // Initial color for medium priority
-                    span.style.paddingLeft = "1rem";
-                    span.textContent = "!!!important";
+                    span.style.fontWeight = "900";
+                    span.style.display = "inline";
+                    span.textContent = "⚠️";
                     closestSpan.appendChild(span);
                 }
 
