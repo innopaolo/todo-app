@@ -41,6 +41,10 @@ body {
     padding: 1rem;
 }
 
+
+
+
+
 .heading {
     display: flex;
     align-items: center;
@@ -67,6 +71,10 @@ body {
 .heading img {
     width: 34%;
 }
+
+
+
+
 
 .form-label {
     display: block;
@@ -96,6 +104,10 @@ body {
       width: 60%;
     }
 }
+
+
+
+
 
 .button {
     padding: 0;
@@ -127,6 +139,10 @@ body {
     outline: 0;
 }
 
+
+
+
+
 .todoList {
     text-align: left;
 }
@@ -152,28 +168,7 @@ body {
 }
 
 
-#theme-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #e6d7a9;
-    color: #494a4b;
-    border-radius: 50%;
-    box-shadow: 3px 3px 2px #1D1E22;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-#theme-btn:hover {
-    animation: shake 0.5s ease;
-}
 
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
-}
 
 
 
@@ -295,6 +290,10 @@ body {
     }
 }
 
+
+
+
+
 /* Creates a wavy strikethrough on task before confirmed deletion */
 .readyForDeletion {
     text-decoration: line-through wavy orangered;
@@ -306,6 +305,38 @@ body {
     bottom: -8px;
     right: 0;
 }
+
+
+
+
+
+/* Toggle light and dark theme */
+#theme-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #e6d7a9;
+    color: #494a4b;
+    border-radius: 50%;
+    box-shadow: 3px 3px 2px #1D1E22;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+#theme-btn:hover {
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+
+
+
 
 /* Dark mode style change */
 .changeThemeBody {
@@ -322,5 +353,6 @@ body {
 
 .changeThemeModal {
     background-image: url("modal-bg-dark.jpg");
+    border: 1px solid antiquewhite;
     color: #eee;
 }

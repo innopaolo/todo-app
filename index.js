@@ -5,6 +5,14 @@
     const input = document.querySelector(".form-input");
     const ul = document.querySelector(".todoList");
 
+
+
+
+
+
+
+
+
     // Unique ID counter for each list item generated
     let taskId = 1 
     let currentIDclicked;
@@ -24,6 +32,14 @@
     });
 
 
+
+
+
+
+
+
+
+
     // When modal submits
     const modalForm = document.querySelector(".modal-form");
     const modalInput = document.getElementById("description");
@@ -40,7 +56,20 @@
 
         modalInput.value = "";
         modalDate.value = "";
+
+        closeModal();
     });
+
+
+
+
+
+
+
+
+
+
+
 
 
     function appendToContainer(todoTask, itemId) {
@@ -74,14 +103,24 @@
     function addModalInfoToTaskObject(currentIDclicked, description, dueDate) {
         const taskObject = todoListArray.find(object => object.itemId == currentIDclicked);
 
-        if(taskObject) {
+        if (taskObject) {
             taskObject.description = description;
             taskObject.dueDate = dueDate;
             console.log(taskObject);
-        } else {
-            alert("object not found");
+        } 
+    }
+
+    function showInfoAsPlaceholder(currentIDclicked) {
+        const taskObject = todoListArray.find(object => object.itemId == currentIDclicked);
+
+        if (taskObject) {
+            if (taskObject.description) {
+                modalInput.placeholder = taskObject.description;
+            }
         }
     }
+
+    // function showInfoUnderListItem()
 
     function removeFromContainer(id) {
         const li = document.querySelector(`[data-id="${id}"]`)
@@ -93,6 +132,15 @@
         todoListArray.splice(taskIndex, 1);
         console.log(todoListArray);
     }
+
+
+
+
+
+
+
+
+
 
 
     // Toggle light and dark theme
@@ -140,6 +188,14 @@
     });
 
 
+
+
+
+
+
+
+
+
     // Get the modal element
     const modal = document.getElementById("myModal");
 
@@ -156,7 +212,7 @@
         modal.style.display = "none";
     }
 
-    // Event Listener for opening the modal
+    // Event Listener for interacting with each list item
     ul.addEventListener("click", e => {
         
         currentIDclicked = e.target.getAttribute("data-id");
@@ -166,6 +222,7 @@
         
         if (e.target.tagName === "SPAN") {
             openModal();
+            showInfoAsPlaceholder(currentIDclicked);
             return;
         }
 
