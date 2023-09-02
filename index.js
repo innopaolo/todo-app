@@ -7,6 +7,7 @@
 
     // Unique ID counter for each list item generated
     let taskId = 1 
+    let currentIDclicked;
 
     form.addEventListener("submit", e => {
         e.preventDefault();
@@ -16,10 +17,29 @@
         let itemId = taskId;
 
         appendToContainer(todoTask, itemId);
-        appendToArray(todoTask, itemId);
+        addToArray(todoTask, itemId);
 
         taskId++
         input.value = "";
+    });
+
+
+    // When modal submits
+    const modalForm = document.querySelector(".modal-form");
+    const modalInput = document.getElementById("description");
+    const modalDate = document.getElementById("dueDate");
+
+    modalForm.addEventListener("submit", e => {
+        e.preventDefault();
+
+        // Remove trailing whitespace if any
+        let description = modalInput.value.trim();
+        let dueDate = modalDate.value;
+
+        addModalInfoToTaskObject(currentIDclicked, description, dueDate);
+
+        modalInput.value = "";
+        modalDate.value = "";
     });
 
 
@@ -46,9 +66,21 @@
         ul.appendChild(li);
     }
 
-    function appendToArray(todoTask, itemId) {
+    function addToArray(todoTask, itemId) {
         todoListArray.push({todoTask, itemId});
         console.log(todoListArray);
+    }
+
+    function addModalInfoToTaskObject(currentIDclicked, description, dueDate) {
+        const taskObject = todoListArray.find(object => object.itemId == currentIDclicked);
+
+        if(taskObject) {
+            taskObject.description = description;
+            taskObject.dueDate = dueDate;
+            console.log(taskObject);
+        } else {
+            alert("object not found");
+        }
     }
 
     function removeFromContainer(id) {
@@ -127,10 +159,10 @@
     // Event Listener for opening the modal
     ul.addEventListener("click", e => {
         
-        let id = e.target.getAttribute("data-id");
+        currentIDclicked = e.target.getAttribute("data-id");
 
         // No response if blank area clicked
-        if (!id) return
+        if (!currentIDclicked) return
         
         if (e.target.tagName === "SPAN") {
             openModal();
@@ -171,8 +203,8 @@
                 // Add a strikethrough and require two taps to delete
                 if (closestLi.classList.contains("readyForDeletion")) {
 
-                    removeFromContainer(id);
-                    removeFromArray(id);
+                    removeFromContainer(currentIDclicked);
+                    removeFromArray(currentIDclicked);
 
                 } else {
 

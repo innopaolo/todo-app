@@ -146,9 +146,7 @@ body {
     display: flex;
     gap: 1em;
 }
-.icon-buttons img:nth-child(1) {
-    cursor: pointer;
-}
+.icon-buttons img:nth-child(1),
 .icon-buttons img:nth-child(2) {
     cursor: pointer;
 }
@@ -269,19 +267,19 @@ body {
 
 .modal-button span {
     position: absolute;
-    top: 0;
-    right: 5px;
+    top: 35px;
+    left: 0;
     transform: rotate(-20deg);
     color: rgb(201, 55, 55);
     font-weight: 900;
     font-size: 1.2rem;
     display: none;
+    text-shadow: 2px 2px 0 black;
+    letter-spacing: 0.2rem;
 }
-
 .modal-button:hover span {
     display: inline;
 }
-
 .modal-form img:hover {
     animation: spin 3s linear infinite;
     opacity: 0.6;
