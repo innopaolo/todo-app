@@ -392,7 +392,8 @@ body {
 
 
 /* Add projects */
-#projects-wrapper {
+#projects-button-wrapper,
+#return-button-wrapper {
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
@@ -406,15 +407,18 @@ body {
     cursor: pointer;
     transition: all 0.1s ease-in-out;
 }
-#projects {
+#projects,
+#return {
     background: #f8f0d6;
     display: block;
     padding: 0.1rem 0.2rem;
     border-radius: 5px;
     border: 2px solid #494a4b;
 }
-#projects-wrapper:active, 
-.projects-wrapper:focus {
+#projects-button-wrapper:active, 
+#projects-button-wrapper:focus,
+#return-button-wrapper:active,
+#return-button-wrapper:focus {
     transform: translateY(4px);
     padding-bottom: 0px;
     outline: 0;
@@ -422,6 +426,13 @@ body {
 
 
 
+
+
+
+/* Return to previous page */
+/* #return-button-wrapper {
+    display: none;
+} */
 
 
 

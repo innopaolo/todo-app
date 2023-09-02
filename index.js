@@ -17,6 +17,7 @@
     let taskId = 1 
     let currentIDclicked;
 
+    // Submit form for initial task page
     form.addEventListener("submit", e => {
         e.preventDefault();
 
@@ -59,6 +60,52 @@
 
         closeModal();
     });
+
+
+
+
+
+
+
+    // Create new project page
+    const addProjectBtn = document.getElementById("projects-button-wrapper"); 
+    const projectContainer = document.querySelector(".container");
+
+    const removedChildren = [];
+
+    addProjectBtn.addEventListener("click", () => {
+        
+        // Clear container by storing each childElement to array then removing after
+        while (projectContainer.firstChild) {
+            removedChildren.push(projectContainer.firstChild);
+            projectContainer.removeChild(projectContainer.firstChild);
+        } 
+        
+        // Create return button
+        const returnBtn = document.createElement("div");
+        returnBtn.setAttribute("id", "return-button-wrapper");
+        returnBtn.innerHTML = "<div id='return' class='far fa-hand-point-left'></div>";
+
+        projectContainer.appendChild(returnBtn);
+    });
+
+
+
+    // Click events within project page
+    projectContainer.addEventListener("click", (e) => {
+
+        // If id is return, go back to home
+        const divId = e.target.getAttribute("id");
+
+        if (divId === "return") {
+            // "Going back home" means putting back the original home elements
+            removedChildren.forEach(child => projectContainer.appendChild(child));
+        }
+    });
+
+
+
+
 
 
 
@@ -123,7 +170,7 @@
     function toggleInfoBelowListItem(currentIDclicked, listItem) {
         const taskObject = findTaskObject(currentIDclicked);
         const infoElementExists = listItem.nextElementSibling;
-        
+
 
         if (infoElementExists && infoElementExists.classList.contains("info-box")) {
             infoElementExists.remove();
