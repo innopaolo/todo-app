@@ -403,9 +403,10 @@ body {
     border-radius: 5px;
     box-shadow: 0 2px 0 #494a4b;
     background-image: url("lines.gif");
-    background-color: #ed9383;
+    background-color: #69a8b5;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
+    font-size: 1.3rem;
 }
 #projects,
 #return {
@@ -426,13 +427,6 @@ body {
 
 
 
-
-
-
-/* Return to previous page */
-/* #return-button-wrapper {
-    display: none;
-} */
 
 
 

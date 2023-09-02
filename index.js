@@ -41,6 +41,11 @@
 
 
 
+
+
+
+
+
     // When modal submits
     const modalForm = document.querySelector(".modal-form");
     const modalInput = document.getElementById("description");
@@ -67,6 +72,13 @@
 
 
 
+
+
+
+
+    // Create new project page
+    // Create new project page
+    // Create new project page
     // Create new project page
     const addProjectBtn = document.getElementById("projects-button-wrapper"); 
     const projectContainer = document.querySelector(".container");
@@ -82,12 +94,25 @@
         } 
         
         // Create return button
-        const returnBtn = document.createElement("div");
+        const returnBtn = document.createElement("button");
         returnBtn.setAttribute("id", "return-button-wrapper");
         returnBtn.innerHTML = "<div id='return' class='far fa-hand-point-left'></div>";
 
         projectContainer.appendChild(returnBtn);
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -100,8 +125,17 @@
         if (divId === "return") {
             // "Going back home" means putting back the original home elements
             removedChildren.forEach(child => projectContainer.appendChild(child));
+
+            // Remove return button
+            const returnBtn = document.getElementById("return-button-wrapper");
+            returnBtn.remove();
         }
     });
+
+
+
+
+
 
 
 
