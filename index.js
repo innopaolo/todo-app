@@ -21,11 +21,11 @@
         e.preventDefault();
 
         // Remove trailing whitespace if any
-        let todoTask = input.value.trim();
+        let title = input.value.trim();
         let itemId = taskId;
 
-        appendToContainer(todoTask, itemId);
-        addToArray(todoTask, itemId);
+        appendToContainer(title, itemId);
+        addToArray(title, itemId);
 
         taskId++
         input.value = "";
@@ -67,12 +67,7 @@
 
 
 
-
-
-
-
-
-    function appendToContainer(todoTask, itemId) {
+    function appendToContainer(title, itemId) {
         const li = document.createElement("li");
         const div = document.createElement("div")
 
@@ -82,7 +77,7 @@
 
         // Create a separate element for the task text
         const taskText = document.createElement("span");
-        taskText.textContent = todoTask;
+        taskText.textContent = title;
 
         // Append the div with the task text and icons to the li
         li.appendChild(taskText);
@@ -95,13 +90,17 @@
         ul.appendChild(li);
     }
 
-    function addToArray(todoTask, itemId) {
-        todoListArray.push({todoTask, itemId});
+    function addToArray(title, itemId) {
+        todoListArray.push({title, itemId});
         console.log(todoListArray);
     }
 
+    function findTaskObject(currentIDclicked) {
+        return todoListArray.find(object => object.itemId == currentIDclicked);
+    }
+
     function addModalInfoToTaskObject(currentIDclicked, description, dueDate) {
-        const taskObject = todoListArray.find(object => object.itemId == currentIDclicked);
+        const taskObject = findTaskObject(currentIDclicked);
 
         if (taskObject) {
             taskObject.description = description;
@@ -111,16 +110,41 @@
     }
 
     function showInfoAsPlaceholder(currentIDclicked) {
-        const taskObject = todoListArray.find(object => object.itemId == currentIDclicked);
+        const taskObject = findTaskObject(currentIDclicked);
 
         if (taskObject) {
             if (taskObject.description) {
-                modalInput.placeholder = taskObject.description;
+                modalInput.value = taskObject.description;
             }
         }
     }
 
-    // function showInfoUnderListItem()
+    
+    function toggleInfoAboveListItem(currentIDclicked, listItem) {
+        const taskObject = findTaskObject(currentIDclicked);
+        const infoElementExists = listItem.nextElementSibling;
+
+        if (infoElementExists && infoElementExists.classList.contains("info-box")) {
+            infoElementExists.remove();
+        } else {
+            // Create a div element to hold the task information
+            const div = document.createElement("div");
+        
+             // Iterate through the properties of the taskObject
+            for (const key in taskObject) {
+                let property = taskObject[key];
+
+                // Create a paragraph element for each property
+                const p = document.createElement("p");
+                p.innerHTML = `<span style="color: #eec384;">${key}:</span> ${property}`;
+                div.appendChild(p);
+            }
+        
+            div.classList.add("info-box");
+            listItem.insertAdjacentElement("afterend", div);
+        }
+    }
+
 
     function removeFromContainer(id) {
         const li = document.querySelector(`[data-id="${id}"]`)
@@ -216,9 +240,14 @@
     ul.addEventListener("click", e => {
         
         currentIDclicked = e.target.getAttribute("data-id");
+ 
 
         // No response if blank area clicked
         if (!currentIDclicked) return
+
+        if (e.target.tagName === "LI") {
+            toggleInfoAboveListItem(currentIDclicked, e.target);
+        }
         
         if (e.target.tagName === "SPAN") {
             openModal();
