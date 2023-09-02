@@ -371,7 +371,7 @@ body {
     color: #494a4b;
     border-radius: 50%;
     box-shadow: 3px 3px 2px #1D1E22;
-    padding: 5px 10px;
+    padding: 5px 7px;
     cursor: pointer;
 }
 #theme-btn:hover {
@@ -385,6 +385,42 @@ body {
     75% { transform: translateX(-5px); }
     100% { transform: translateX(0); }
 }
+
+
+
+
+
+
+/* Add projects */
+#projects-wrapper {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    padding: 0;
+    border: 0;
+    padding-bottom: 3px;
+    border-radius: 5px;
+    box-shadow: 0 2px 0 #494a4b;
+    background-image: url("lines.gif");
+    background-color: #ed9383;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+#projects {
+    background: #f8f0d6;
+    display: block;
+    padding: 0.1rem 0.2rem;
+    border-radius: 5px;
+    border: 2px solid #494a4b;
+}
+#projects-wrapper:active, 
+.projects-wrapper:focus {
+    transform: translateY(4px);
+    padding-bottom: 0px;
+    outline: 0;
+}
+
+
 
 
 
