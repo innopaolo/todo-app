@@ -230,6 +230,9 @@ body {
     bottom: -8px;
     right: 0;
 }
+.readyForDeletionInfo {
+    text-decoration: line-through wavy orangered;
+}
 
 
 

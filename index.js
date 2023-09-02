@@ -120,9 +120,10 @@
     }
 
     
-    function toggleInfoAboveListItem(currentIDclicked, listItem) {
+    function toggleInfoBelowListItem(currentIDclicked, listItem) {
         const taskObject = findTaskObject(currentIDclicked);
         const infoElementExists = listItem.nextElementSibling;
+        
 
         if (infoElementExists && infoElementExists.classList.contains("info-box")) {
             infoElementExists.remove();
@@ -246,7 +247,7 @@
         if (!currentIDclicked) return
 
         if (e.target.tagName === "LI") {
-            toggleInfoAboveListItem(currentIDclicked, e.target);
+            toggleInfoBelowListItem(currentIDclicked, e.target);
         }
         
         if (e.target.tagName === "SPAN") {
@@ -283,23 +284,27 @@
                     span.textContent = "⚠️";
                     closestSpan.appendChild(span);
                 }
-
+            // If clicked icon is the delete button
             } else {
                 const closestLi = e.target.closest("li");
+                const infoBox = closestLi.nextElementSibling;
 
-                // Add a strikethrough and require two taps to delete
+                // Add a strikethrough but require two taps to delete
                 if (closestLi.classList.contains("readyForDeletion")) {
 
                     removeFromContainer(currentIDclicked);
                     removeFromArray(currentIDclicked);
+                    if(infoBox) infoBox.remove();
 
                 } else {
 
-                    closestLi.classList.add("readyForDeletion")
+                    closestLi.classList.add("readyForDeletion");
+                    if(infoBox) infoBox.classList.add("readyForDeletionInfo");
 
                     // Remove strikethrough if not confirmed after 6 seconds
                     setTimeout(() => {
                         closestLi.classList.remove("readyForDeletion");
+                        if(infoBox) infoBox.classList.remove("readyForDeletionInfo");
                     }, 6000);
                 } 
             }
