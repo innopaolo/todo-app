@@ -15,10 +15,13 @@
         </header>
         <form class="form">
             <div>
+
                 <label for="todo" class="form-label">
                     Hey! Today you need to ~
                 </label>
+
                 <input autocomplete="off" autofill="off" type="text" class="form-input" id="todo" name="todo" size="30" required>
+
                 <button class="button">
                     <span>Submit</span>
                 </button>
@@ -31,7 +34,12 @@
         <!-- Font awesome icon class add project -->
         <button id="projects-button-wrapper"><div id="projects" class="fas fa-folder-plus"></div></button>
 
-            
+        <!-- Projects container -->
+        <div class="add-project-card">New Project+</div>
+        <div class="footer">
+            <img src="nakama.png" alt="Goodbye to Vivi">
+            <aside>poor chopper<br> lol</aside>
+        </div>
     </section>
 
 
@@ -43,16 +51,67 @@
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <p>Add/edit description</p>
+            <p>add/edit description</p>
             <form class="modal-form">
+
                 <textarea name="description" id="description" cols="30" rows="3"></textarea>  
-                <label for="dueDate" class="date-label">X Marks the Date:</label>
+
+                <label for="dueDate" class="date-label">x Marks the Date</label>
                 <input type="date" id="dueDate" required>
+
                 <button type="submit" class="modal-button">
-                    <img id="modal-image" src="ship-wheel.png" alt="Made by Satawat Design in flaticon.com">
+                    <img class="modal-image" src="ship-wheel.png" alt="Made by Satawat Design in flaticon.com">
                     <span>Yohohoho!</span>
                 </button>
             </form>
+            <div class="modal-footers">
+                <img src="zoro-sword2.png" alt="Zoro's sword flipped">
+                <img src="zoro-sword1.png" alt="Zoro's sword">
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects modal -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <form id="project-modal-form">
+
+                <div>
+                    <label for="title">title</label><br>
+                    <input autocomplete="off" autofill="off" type="text" id="title" name="title" required>
+                </div>
+
+                <div>
+                    <label for="dueDate">due date</label><br>
+                    <input type="date" id="pDate" required>
+                </div>
+
+                <div class="down-arrow-div">
+                    <button class="button prj-btn" id="addTaskBtn">
+                        <span>add task</span>
+                    </button>
+                    <img src="squiggly-arrow.png" alt="squiggly arrow pointing down">
+                </div>
+
+                <div id="taskList">
+                    <div class="task">
+                        <input id="taskInput" type="text" class="taskInput" placeholder="Task name" required>
+                        <button id="removeTaskBtn" class="button prj-btn">
+                            <span>Remove</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="modal-button">
+                    <img class="modal-image" src="ship-wheel.png" alt="Made by Satawat Design in flaticon.com">
+                    <span>Yohohoho!</span>
+                </button>
+            </form>
+
+            <div class="modal-footers">
+                <img src="usopp-slingshot2.png" alt="Usopp's slingshot">
+                <img src="usopp-slingshot1.png" alt="Usopp's slingshot flipped">
+            </div>
         </div>
     </div>
 

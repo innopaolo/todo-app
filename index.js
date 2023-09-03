@@ -82,8 +82,11 @@
     // Create new project page
     const addProjectBtn = document.getElementById("projects-button-wrapper"); 
     const projectContainer = document.querySelector(".container");
+    const footer = document.querySelector(".footer");
+    const addProjectCard = document.querySelector(".add-project-card");
 
     const removedChildren = [];
+    const projectsArray = [];
 
     addProjectBtn.addEventListener("click", () => {
         
@@ -92,6 +95,10 @@
             removedChildren.push(projectContainer.firstChild);
             projectContainer.removeChild(projectContainer.firstChild);
         } 
+
+        // Create project cards container
+        const cardsContainer = document.createElement("div");
+        cardsContainer.classList.add("cards-container");
         
         // Create return button
         const returnBtn = document.createElement("button");
@@ -99,18 +106,19 @@
         returnBtn.innerHTML = "<div id='return' class='far fa-hand-point-left'></div>";
 
         projectContainer.appendChild(returnBtn);
+
+
+        // Re-populate project page with project cards if any
+        projectsArray.forEach(project => cardsContainer.appendChild(project));
+
+        // Show non-project elements
+        projectContainer.appendChild(footer);
+        projectContainer.appendChild(addProjectCard);
+        projectContainer.appendChild(cardsContainer);
+        footer.style.display = "block";
+        addProjectCard.style.display = "block";
+
     });
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -119,20 +127,40 @@
     // Click events within project page
     projectContainer.addEventListener("click", (e) => {
 
-        // If id is return, go back to home
+        // If id is return, go back to home container
         const divId = e.target.getAttribute("id");
-
         if (divId === "return") {
+
+            const cardsContainer = document.querySelector(".cards-container");
+
+            while (cardsContainer.firstChild) {
+                projectsArray.push(cardsContainer.firstChild);
+                cardsContainer.removeChild(cardsContainer.firstChild);
+            }
+
             // "Going back home" means putting back the original home elements
             removedChildren.forEach(child => projectContainer.appendChild(child));
 
             // Remove return button
             const returnBtn = document.getElementById("return-button-wrapper");
             returnBtn.remove();
+
+            // Hide elements
+            footer.style.display = "none";
+            addProjectCard.style.display = "none";
+            cardsContainer.remove();
+
+        } else if (divId && divId.includes("card_")) {
+            console.log(divId);
         }
     });
 
 
+    addProjectCard.addEventListener("click", () => {
+        openProjectModal();
+        const cardsContainer = document.querySelector(".cards-container");
+        addProjects(cardsContainer);
+    })
 
 
 
@@ -145,8 +173,36 @@
 
 
 
+    function addProjects(cardsContainer) {
 
+        const newCard = document.createElement("div");
+        newCard.className = "card-content";
 
+        // Give each card a timestamp id
+        const id = "card_" + new Date().getTime().toString();
+        newCard.id = id;
+
+        // Create DOM elements for the card content, avoiding innerHTML
+        const title = document.createElement("h1");
+        title.textContent = "Untitled" 
+
+        const subtitle = document.createElement("p");
+        const span = document.createElement("span");
+        span.textContent = "Due date:"
+        span.style.color = "#eec384"
+        subtitle.appendChild(span);
+
+        const removeBtn = document.createElement("span");
+        removeBtn.className = "remove-btn";
+        removeBtn.id = id
+        removeBtn.innerHTML = "<img src='trash-can-solid.svg'>"; 
+        
+        newCard.appendChild(title);
+        newCard.appendChild(subtitle);
+        newCard.appendChild(removeBtn);
+
+        cardsContainer.appendChild(newCard);
+    }
 
     function appendToContainer(title, itemId) {
         const li = document.createElement("li");
@@ -239,6 +295,54 @@
         console.log(todoListArray);
     }
 
+    // Factory function to create projects
+    // Factory function to create projects
+    // Factory function to create projects
+    // Factory function to create projects
+    function createProject(title, date, tasks) {
+        return { title, date, tasks };
+    }
+
+    function addTaskInput() {
+        const taskList = document.getElementById("taskList");
+        const taskDiv = document.createElement("div");
+
+        taskDiv.className = "task";
+        taskDiv.inneHTML = '<input id="taskInput" type="text" class="taskInput" placeholder="Task name" required><button type="button" class="removeTaskBtn">Remove</button>';
+        
+        taskList.appendChild(taskDiv);
+
+        // Add event listener to the new remove button
+        const removeTaskBtn = document.getElementById("removeTaskBtn");
+        removeTaskBtn.addEventListener("click", () => {
+            taskList.removeChild(taskDiv);
+        });
+    }
+
+    // Event listener for adding a new task
+    const addTaskBtn = document.getElementById("addTaskBtn");
+    addTaskBtn.addEventListener("click", addTaskInput);
+
+    // Event listener for form submission
+    const projectModalForm = document.getElementById("project-modal-form");
+
+    projectModalForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        // Get form data
+        const projectTitle = document.getElementById("title").value;
+        const dueDate = document.getElementById("pDate").value;
+        const taskInputs = document.querySelectorAll(".taskInput");
+        const tasks = Array.from(taskInputs).map(input => input.value);
+
+         // Create a new project instance
+        const newProject = createProject(projectTitle, dueDate, tasks);
+
+        // Log or save the new project as needed
+        console.log("New Project:", newProject);
+
+    });
+
 
 
 
@@ -253,7 +357,7 @@
     const themeBtn = document.getElementById("theme-btn");
     const container = document.querySelector(".container");
     const formInput = document.querySelector(".form-input");
-    const modalContent = document.querySelector(".modal-content");
+    const modalContent = document.querySelectorAll(".modal-content");
     const modalImage = document.getElementById("modal-image");
     const modalTxtarea = document.getElementById("description");
 
@@ -271,11 +375,15 @@
             document.body.classList.add("changeThemeBody");
             container.classList.add("changeThemeContainer");
             formInput.classList.add("changeThemeInput");
-            modalContent.classList.add("changeThemeModal");
             modalTxtarea.classList.add("changeThemeInput");
+            modalContent.forEach(element => {
+                element.classList.add("changeThemeModal");
+            });
 
             // Change to white version of the ship's wheel button
-            modalImage.src = "ship-wheel-light.png";
+            modalImage.forEach(element => {
+                element.src = "ship-wheel-light.png";
+            });
 
         } else {
 
@@ -285,11 +393,15 @@
             document.body.classList.remove("changeThemeBody");
             container.classList.remove("changeThemeContainer");
             formInput.classList.remove("changeThemeInput");
-            modalContent.classList.remove("changeThemeModal");
             modalTxtarea.classList.remove("changeThemeInput");
+            modalContent.forEach(element => {
+                element.classList.remove("changeThemeModal");
+            });
 
             // Change to black version of the ship's wheel button
-            modalImage.src = "ship-wheel.png";
+            modalImage.forEach(element => {
+                element.src = "ship-wheel-light.png";
+            });
         }
     });
 
@@ -304,6 +416,7 @@
 
     // Get the modal element
     const modal = document.getElementById("myModal");
+    const pModal = document.getElementById("projectModal");
 
     // Get the close button element inside the modal
     const closeBtn = document.querySelector(".close");
@@ -313,9 +426,14 @@
         modal.style.display = "block";
     }
 
+    function openProjectModal() {
+        pModal.style.display = "block";
+    }
+
     // Function to close the modal
     function closeModal() {
         modal.style.display = "none";
+        pModal.style.display = "none"
     }
 
     // Event Listener for interacting with each list item
@@ -397,12 +515,11 @@
     closeBtn.addEventListener("click", closeModal);
 
     // Event listener for closing the modal when clicking outside the modal content
-    window.addEventListener("click", (event) => {
-        if (event.target === modal) {
+    window.addEventListener("click", (e) => {
+        if (e.target === modal || e.target === pModal) {
             closeModal();
         }
     });
-
 
 
 })();
