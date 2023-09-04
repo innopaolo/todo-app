@@ -531,11 +531,11 @@ body {
 
 #project-modal-form .task input {
     width: 80%;
-    border: 1px dashed #ed9383;
+    border: 2px dashed #ed9383;
     background-color: transparent;
 }
 #project-modal-form .task input:focus {
-    border: 1px dashed red;
+    border: 2px dashed red;
 }
 
 @media only screen and (max-width: 500px) {
@@ -549,6 +549,11 @@ body {
     }
 }
 
+.task {
+    margin-bottom: 0.8em;
+    display: flex;
+    gap: 7px;
+}
 .prj-btn {
     width: fit-content;
     transform: rotate(0deg);
@@ -559,7 +564,6 @@ body {
 
 .prj-btn.removeTaskBtn {
     display: inline-block;
-    margin-bottom: 0.8em;
 }
 .prj-btn.removeTaskBtn span {
     font-size: 0.7rem;

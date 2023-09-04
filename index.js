@@ -317,7 +317,6 @@
         const removeTaskBtn = document.querySelectorAll(".removeTaskBtn");
         
         removeTaskBtn.forEach(element => {
-
             element.addEventListener("click", (e) => {
                 const div = e.target.closest(".task");
                 div.remove();
@@ -371,13 +370,8 @@
             }
             element.value = "";
         });
-        let counter2 = removeTaskBtn.length;
         removeTaskBtn.forEach(element => {
-            // Leave one button
-            if (counter2 > 1) {
-                element.remove();
-                counter2--;
-            }
+            element.remove();
         });
 
 
