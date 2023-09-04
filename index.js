@@ -27,7 +27,7 @@
 
         appendToContainer(title, itemId);
         addToArray(title, itemId);
-        console.log(todoListArray);
+
 
         taskId++
         input.value = "";
@@ -159,10 +159,10 @@
 
         } else if (e.target.classList.contains("delete")) {
 
-            // const h1 = card.querySelector("h1");
-           
-            // const projectDelete = projectsArray.find(obj => obj.title === h1.textContent);
-            // card.remove();      
+            const idValue = card.getAttribute("id");
+            removeFromArray(projectsArray, idValue);
+            card.remove();      
+            console.log(projectsArray);
         }
     });
 
@@ -196,7 +196,7 @@
             card.appendChild(taskh3);
 
             // Find project object with same divID and grab its tasks
-            const clickedProject = projectsArray.find(project => project.projectId === divId); 
+            const clickedProject = projectsArray.find(project => project.itemId === divId); 
             
             const list = document.createElement("ul");
             list.id = divId;
@@ -341,16 +341,15 @@
 
     function removeFromArray(array, id) {
         const objIndex = array.findIndex(task => task.itemId == id);
-        todoListArray.splice(objIndex, 1);
-        console.log(todoListArray);
+        array.splice(objIndex, 1);
     }
 
     // Factory function to create projects
     // Factory function to create projects
     // Factory function to create projects
     // Factory function to create projects
-    function createProject(title, date, tasks, projectId) {
-        return { title, date, tasks, projectId };
+    function createProject(title, date, tasks, itemId) {
+        return { title, date, tasks, itemId };
     }
 
     function addTaskInput() {
@@ -405,15 +404,15 @@
         const taskList = document.getElementById("taskList");
 
         // Give each project a timestamp id
-        const projectId = "card_" + new Date().getTime().toString();
+        const itemId = "card_" + new Date().getTime().toString();
 
          // Create a new project instance
-        const newProject = createProject(projectTitle.value, dueDate.value, tasks, projectId);
+        const newProject = createProject(projectTitle.value, dueDate.value, tasks, itemId);
 
         // Save the new project
         projectsArray.push(newProject);
 
-        appendProjectsToCardsContainer(projectTitle.value, dueDate.value, projectId);
+        appendProjectsToCardsContainer(projectTitle.value, dueDate.value, itemId);
 
 
         // Remove values and clear task list
@@ -654,6 +653,5 @@
             closeModal();
         }
     });
-
 
 })();
