@@ -312,6 +312,7 @@
         
         taskList.appendChild(taskDiv);
 
+
         // New remove buttons deletes the adjacent task on click
         const removeTaskBtn = document.querySelectorAll(".removeTaskBtn");
         
@@ -322,14 +323,15 @@
                 div.remove();
             });
 
-        });
-        
-        
+        });   
     }
 
     // Event listener for adding a new task
     const addTaskBtn = document.getElementById("addTaskBtn");
-    addTaskBtn.addEventListener("click", addTaskInput);
+    addTaskBtn.addEventListener("click", () => {
+        addTaskInput();
+        updateTheme();
+    });
 
     // Event listener for form submission
     const projectModalForm = document.getElementById("project-modal-form");
@@ -366,15 +368,34 @@
 
 
     // Toggle light and dark theme
+    function updateTheme() {
+        const taskInputs = document.querySelectorAll(".taskInput");
+        taskInputs.forEach(element => {
+            element.classList.toggle("changeThemeInput", darkTheme);
+        });
+        const projectModalButtons = document.querySelectorAll(".prj-btn");
+        projectModalButtons.forEach(element => {
+            if (darkTheme) {
+                element.style.color = "black";
+            }
+        });
+    }
+
     const themeBtn = document.getElementById("theme-btn");
     const container = document.querySelector(".container");
     const formInput = document.querySelector(".form-input");
-    const modalContent = document.querySelectorAll(".modal-content");
-    const modalImage = document.getElementById("modal-image");
     const modalTxtarea = document.getElementById("description");
+    const modalContent = document.querySelectorAll(".modal-content");
+    const modalSubmitImage = document.querySelectorAll(".modal-image");
+    const taskInputs = document.querySelectorAll(".taskInput");
+    const squigglyArrow = document.getElementById("squiggly-arrow");
 
+    let darkTheme = false;
 
     themeBtn.addEventListener("click", () => {
+        darkTheme = !darkTheme;
+
+        updateTheme();
 
         // Default class "fa-moon" switches to "fa-sun" on toggle
         themeBtn.classList.toggle("fa-sun");
@@ -388,14 +409,21 @@
             container.classList.add("changeThemeContainer");
             formInput.classList.add("changeThemeInput");
             modalTxtarea.classList.add("changeThemeInput");
+            
             modalContent.forEach(element => {
                 element.classList.add("changeThemeModal");
             });
+            console.log(taskInputs);
+            taskInputs.forEach(element => {
+                element.classList.add("changeThemeInput");
+            });
+            
 
-            // Change to white version of the ship's wheel button
-            modalImage.forEach(element => {
+            // White version of the ship's wheel button and squiggly arrow
+            modalSubmitImage.forEach(element => {
                 element.src = "ship-wheel-light.png";
             });
+            squigglyArrow.src = "squiggly-arrow-light.png";
 
         } else {
 
@@ -406,14 +434,19 @@
             container.classList.remove("changeThemeContainer");
             formInput.classList.remove("changeThemeInput");
             modalTxtarea.classList.remove("changeThemeInput");
+            
             modalContent.forEach(element => {
                 element.classList.remove("changeThemeModal");
             });
-
-            // Change to black version of the ship's wheel button
-            modalImage.forEach(element => {
-                element.src = "ship-wheel-light.png";
+            taskInputs.forEach(element => {
+                element.classList.remove("changeThemeInput");
             });
+
+            // Black version of the ship's wheel button and squiggly arrow
+            modalSubmitImage.forEach(element => {
+                element.src = "ship-wheel.png";
+            });
+            squigglyArrow.src = "squiggly-arrow.png";
         }
     });
 
