@@ -86,7 +86,7 @@
     const addProjectCard = document.querySelector(".add-project-card");
 
     const removedChildren = [];
-    const projectsArray = [];
+    const removedProjectsArray = [];
 
     addProjectBtn.addEventListener("click", () => {
         
@@ -100,7 +100,7 @@
         const cardsContainer = document.createElement("div");
         cardsContainer.classList.add("cards-container");
         
-        // Create return button
+        // Create return to home button
         const returnBtn = document.createElement("button");
         returnBtn.setAttribute("id", "return-button-wrapper");
         returnBtn.innerHTML = "<div id='return' class='far fa-hand-point-left'></div>";
@@ -109,7 +109,7 @@
 
 
         // Re-populate project page with project cards if any
-        projectsArray.forEach(project => cardsContainer.appendChild(project));
+        removedProjectsArray.forEach(project => cardsContainer.appendChild(project));
 
         // Show non-project elements
         projectContainer.appendChild(footer);
@@ -134,7 +134,7 @@
             const cardsContainer = document.querySelector(".cards-container");
 
             while (cardsContainer.firstChild) {
-                projectsArray.push(cardsContainer.firstChild);
+                removedProjectsArray.push(cardsContainer.firstChild);
                 cardsContainer.removeChild(cardsContainer.firstChild);
             }
 
@@ -156,10 +156,9 @@
     });
 
 
-    addProjectCard.addEventListener("click", () => {
-        openProjectModal();
-        const cardsContainer = document.querySelector(".cards-container");
-        addProjects(cardsContainer);
+    addProjectCard.addEventListener("click", (e) => {
+        const clickedElement = e.target.getAttribute("id");
+        openModal(clickedElement);
     })
 
 
@@ -173,8 +172,8 @@
 
 
 
-    function addProjects(cardsContainer) {
-
+    function appendProjectsToCardsContainer(projectTitle, dueDate) {
+        const cardsContainer = document.querySelector(".cards-container");
         const newCard = document.createElement("div");
         newCard.className = "card-content";
 
@@ -182,15 +181,13 @@
         const id = "card_" + new Date().getTime().toString();
         newCard.id = id;
 
-        // Create DOM elements for the card content, avoiding innerHTML
+        // Create DOM elements for the card content
         const title = document.createElement("h1");
-        title.textContent = "Untitled" 
+        title.textContent = projectTitle;
 
         const subtitle = document.createElement("p");
-        const span = document.createElement("span");
-        span.textContent = "Due date:"
-        span.style.color = "#eec384"
-        subtitle.appendChild(span);
+        subtitle.textContent = dueDate;
+
 
         const removeBtn = document.createElement("span");
         removeBtn.className = "remove-btn";
@@ -214,6 +211,7 @@
 
         // Create a separate element for the task text
         const taskText = document.createElement("span");
+        taskText.classList.add("openMyModal");
         taskText.textContent = title;
 
         // Append the div with the task text and icons to the li
@@ -304,19 +302,29 @@
     }
 
     function addTaskInput() {
+        const id = "task_" + new Date().getTime().toString();
+
         const taskList = document.getElementById("taskList");
         const taskDiv = document.createElement("div");
 
         taskDiv.className = "task";
-        taskDiv.inneHTML = '<input id="taskInput" type="text" class="taskInput" placeholder="Task name" required><button type="button" class="removeTaskBtn">Remove</button>';
+        taskDiv.innerHTML = `<input data-id="${id}" type="text" class="taskInput" placeholder="Task name"><div class="button prj-btn removeTaskBtn"><span>remove</span></div>`;
         
         taskList.appendChild(taskDiv);
 
-        // Add event listener to the new remove button
-        const removeTaskBtn = document.getElementById("removeTaskBtn");
-        removeTaskBtn.addEventListener("click", () => {
-            taskList.removeChild(taskDiv);
+        // New remove buttons deletes the adjacent task on click
+        const removeTaskBtn = document.querySelectorAll(".removeTaskBtn");
+        
+        removeTaskBtn.forEach(element => {
+
+            element.addEventListener("click", (e) => {
+                const div = e.target.closest(".task");
+                div.remove();
+            });
+
         });
+        
+        
     }
 
     // Event listener for adding a new task
@@ -325,6 +333,7 @@
 
     // Event listener for form submission
     const projectModalForm = document.getElementById("project-modal-form");
+    const projectsArray = [];
 
     projectModalForm.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -332,15 +341,18 @@
         // Get form data
         const projectTitle = document.getElementById("title").value;
         const dueDate = document.getElementById("pDate").value;
-        const taskInputs = document.querySelectorAll(".taskInput");
-        const tasks = Array.from(taskInputs).map(input => input.value);
+        const taskInput = document.querySelectorAll(".taskInput");
+        const tasks = Array.from(taskInput).map(input => input.value);
 
          // Create a new project instance
         const newProject = createProject(projectTitle, dueDate, tasks);
 
-        // Log or save the new project as needed
-        console.log("New Project:", newProject);
+        // Save the new project
+        projectsArray.push(newProject);
 
+        appendProjectsToCardsContainer(projectTitle, dueDate);
+
+        closeModal();
     });
 
 
@@ -419,15 +431,15 @@
     const pModal = document.getElementById("projectModal");
 
     // Get the close button element inside the modal
-    const closeBtn = document.querySelector(".close");
+    const closeBtn = document.querySelectorAll(".close");
 
     // Function to open the modal
-    function openModal() {
-        modal.style.display = "block";
-    }
-
-    function openProjectModal() {
-        pModal.style.display = "block";
+    function openModal(id) {
+        if (id === "openMyModal") {
+            modal.style.display = "block";
+        } else if (id === "addProject") {
+            pModal.style.display = "block";
+        }
     }
 
     // Function to close the modal
@@ -450,7 +462,8 @@
         }
         
         if (e.target.tagName === "SPAN") {
-            openModal();
+            const className = e.target.getAttribute("class");
+            openModal(className);
             showInfoAsPlaceholder(currentIDclicked);
             return;
         }
@@ -512,7 +525,9 @@
     });
 
     // Event listener for closing the modal when clicking the close button
-    closeBtn.addEventListener("click", closeModal);
+    closeBtn.forEach(element => {
+        element.addEventListener("click", closeModal);
+    });
 
     // Event listener for closing the modal when clicking outside the modal content
     window.addEventListener("click", (e) => {
