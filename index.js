@@ -80,7 +80,7 @@
     // Create new project page
     // Create new project page
     // Create new project page
-    const addProjectBtn = document.getElementById("projects-button-wrapper"); 
+    const goToProjectPage = document.getElementById("projects-button-wrapper"); 
     const projectContainer = document.querySelector(".container");
     const footer = document.querySelector(".footer");
     const addProjectCard = document.querySelector(".add-project-card");
@@ -88,7 +88,7 @@
     const removedChildren = [];
     const removedProjectsArray = [];
 
-    addProjectBtn.addEventListener("click", () => {
+    goToProjectPage.addEventListener("click", () => {
         
         // Clear container by storing each childElement to array then removing after
         while (projectContainer.firstChild) {
@@ -127,7 +127,7 @@
     // Click events within project page
     projectContainer.addEventListener("click", (e) => {
 
-        // If id is return, go back to home container
+        // If id is "return", go back to home container
         const divId = e.target.getAttribute("id");
         if (divId === "return") {
 
@@ -341,18 +341,46 @@
         e.preventDefault();
 
         // Get form data
-        const projectTitle = document.getElementById("title").value;
-        const dueDate = document.getElementById("pDate").value;
-        const taskInput = document.querySelectorAll(".taskInput");
-        const tasks = Array.from(taskInput).map(input => input.value);
+        const projectTitle = document.getElementById("title");
+        const dueDate = document.getElementById("pDate");
+        const taskInputs = document.querySelectorAll(".taskInput");
+        const tasks = Array.from(taskInputs).map(input => input.value);
+        const removeTaskBtn = document.querySelectorAll(".removeTaskBtn");
 
          // Create a new project instance
-        const newProject = createProject(projectTitle, dueDate, tasks);
+        const newProject = createProject(projectTitle.value, dueDate.value, tasks);
 
         // Save the new project
         projectsArray.push(newProject);
 
-        appendProjectsToCardsContainer(projectTitle, dueDate);
+        appendProjectsToCardsContainer(projectTitle.value, dueDate.value);
+        console.log(projectsArray);
+
+
+
+        // Remove values and clean task list
+        projectTitle.value = "";
+        dueDate.value = "";
+
+        let counter = taskInputs.length;
+        taskInputs.forEach(element => {  
+            // Leave one input bar
+            if (counter > 1) {
+                element.remove();
+                counter--;
+            }
+            element.value = "";
+        });
+        let counter2 = removeTaskBtn.length;
+        removeTaskBtn.forEach(element => {
+            // Leave one button
+            if (counter2 > 1) {
+                element.remove();
+                counter2--;
+            }
+        });
+
+
 
         closeModal();
     });
