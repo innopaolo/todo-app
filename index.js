@@ -151,7 +151,10 @@
             cardsContainer.remove();
 
         } else if (divId && divId.includes("card_")) {
-            console.log(divId);
+            const card = e.target.closest(".card-content");
+            toggleCardLength(card, divId);
+
+            console.log(card.querySelector("h1"));
         }
     });
 
@@ -171,21 +174,63 @@
 
 
 
+    function toggleCardLength(card, divId) {
+        const taskh3 = card.querySelector("h3");
 
-    function appendProjectsToCardsContainer(projectTitle, dueDate) {
+        if (!taskh3) {
+            // Create tasks header
+            const taskh3 = document.createElement("h3");
+            taskh3.id = divId;
+            taskh3.textContent = "Tasks:"
+    
+            card.appendChild(taskh3);
+
+            // Find project object with same divID and grab its tasks
+            const clickedProject = projectsArray.find(project => project.projectId === divId);
+            
+            const list = document.createElement("ul");
+            list.id = divId;
+            list.className = "project-list";
+
+            // Each task appended to a list
+            clickedProject.tasks.forEach(element => {
+               const li = document.createElement("li");
+               li.id = divId;
+               li.textContent = element;
+               
+               list.appendChild(li);
+            });
+
+            // Append list of tasks to card
+            card.appendChild(list);
+
+        } else {
+            card.removeChild(taskh3);
+            
+            const list = document.querySelectorAll(".project-list");
+            list.forEach(ul => {
+                if (ul.id === divId) {
+                    ul.remove();
+                }
+            });
+        }     
+    }
+
+
+    function appendProjectsToCardsContainer(projectTitle, dueDate, id) {
         const cardsContainer = document.querySelector(".cards-container");
+        
         const newCard = document.createElement("div");
         newCard.className = "card-content";
-
-        // Give each card a timestamp id
-        const id = "card_" + new Date().getTime().toString();
         newCard.id = id;
 
         // Create DOM elements for the card content
         const title = document.createElement("h1");
+        title.id = id;
         title.textContent = projectTitle;
 
         const subtitle = document.createElement("p");
+        subtitle.id = id;
         subtitle.textContent = dueDate;
 
 
@@ -227,7 +272,6 @@
 
     function addToArray(title, itemId) {
         todoListArray.push({title, itemId});
-        console.log(todoListArray);
     }
 
     function findTaskObject(currentIDclicked) {
@@ -240,7 +284,6 @@
         if (taskObject) {
             taskObject.description = description;
             taskObject.dueDate = dueDate;
-            console.log(taskObject);
         } 
     }
 
@@ -290,15 +333,14 @@
     function removeFromArray(id) {
         const taskIndex = todoListArray.findIndex(task => task.itemId == id);
         todoListArray.splice(taskIndex, 1);
-        console.log(todoListArray);
     }
 
     // Factory function to create projects
     // Factory function to create projects
     // Factory function to create projects
     // Factory function to create projects
-    function createProject(title, date, tasks) {
-        return { title, date, tasks };
+    function createProject(title, date, tasks, projectId) {
+        return { title, date, tasks, projectId };
     }
 
     function addTaskInput() {
@@ -308,7 +350,7 @@
         const taskDiv = document.createElement("div");
 
         taskDiv.className = "task";
-        taskDiv.innerHTML = `<input data-id="${id}" type="text" class="taskInput" placeholder="Task name"><div class="button prj-btn removeTaskBtn"><span>remove</span></div>`;
+        taskDiv.innerHTML = `<input data-id="task_${id}" type="text" class="taskInput" placeholder="Task name" required><div class="button prj-btn removeTaskBtn"><span>remove</span></div>`;
         
         taskList.appendChild(taskDiv);
 
@@ -324,6 +366,11 @@
 
         });   
     }
+
+
+
+
+
 
     // Event listener for adding a new task
     const addTaskBtn = document.getElementById("addTaskBtn");
@@ -346,15 +393,17 @@
         const tasks = Array.from(taskInputs).map(input => input.value);
         const removeTaskBtn = document.querySelectorAll(".removeTaskBtn");
 
+        // Give each project a timestamp id
+        const projectId = "card_" + new Date().getTime().toString();
+
          // Create a new project instance
-        const newProject = createProject(projectTitle.value, dueDate.value, tasks);
+        const newProject = createProject(projectTitle.value, dueDate.value, tasks, projectId);
 
         // Save the new project
         projectsArray.push(newProject);
-
-        appendProjectsToCardsContainer(projectTitle.value, dueDate.value);
         console.log(projectsArray);
 
+        appendProjectsToCardsContainer(projectTitle.value, dueDate.value, projectId);
 
 
         // Remove values and clean task list
@@ -373,7 +422,6 @@
         removeTaskBtn.forEach(element => {
             element.remove();
         });
-
 
 
         closeModal();
@@ -435,7 +483,6 @@
             modalContent.forEach(element => {
                 element.classList.add("changeThemeModal");
             });
-            console.log(taskInputs);
             taskInputs.forEach(element => {
                 element.classList.add("changeThemeInput");
             });

@@ -477,11 +477,16 @@ body {
     font-size: 0.8rem;
     background-color: #69a8b5;
     cursor: pointer;
+    height: fit-content;
 }
 
 .card-content h1,
 .card-content p {
     width: fit-content;
+}
+
+.project-list {
+    margin-left: 10%;
 }
 
 .remove-btn {
@@ -568,6 +573,7 @@ body {
 .prj-btn.removeTaskBtn span {
     font-size: 0.7rem;
 }
+
 
 
 
