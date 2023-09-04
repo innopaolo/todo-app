@@ -27,6 +27,7 @@
 
         appendToContainer(title, itemId);
         addToArray(title, itemId);
+        console.log(todoListArray);
 
         taskId++
         input.value = "";
@@ -127,6 +128,8 @@
     // Click events within project page
     projectContainer.addEventListener("click", (e) => {
 
+        const card = e.target.closest(".card-content");
+
         // If id is "return", go back to home container
         const divId = e.target.getAttribute("id");
         if (divId === "return") {
@@ -151,10 +154,15 @@
             cardsContainer.remove();
 
         } else if (divId && divId.includes("card_")) {
-            const card = e.target.closest(".card-content");
+
             toggleCardLength(card, divId);
 
-            console.log(card.querySelector("h1"));
+        } else if (e.target.classList.contains("delete")) {
+
+            // const h1 = card.querySelector("h1");
+           
+            // const projectDelete = projectsArray.find(obj => obj.title === h1.textContent);
+            // card.remove();      
         }
     });
 
@@ -163,6 +171,8 @@
         const clickedElement = e.target.getAttribute("id");
         openModal(clickedElement);
     })
+
+
 
 
 
@@ -186,7 +196,7 @@
             card.appendChild(taskh3);
 
             // Find project object with same divID and grab its tasks
-            const clickedProject = projectsArray.find(project => project.projectId === divId);
+            const clickedProject = projectsArray.find(project => project.projectId === divId); 
             
             const list = document.createElement("ul");
             list.id = divId;
@@ -194,9 +204,9 @@
 
             // Each task appended to a list
             clickedProject.tasks.forEach(element => {
-               const li = document.createElement("li");
-               li.id = divId;
-               li.textContent = element;
+            const li = document.createElement("li");
+            li.id = divId;
+            li.textContent = element;
                
                list.appendChild(li);
             });
@@ -235,9 +245,8 @@
 
 
         const removeBtn = document.createElement("span");
-        removeBtn.className = "remove-btn";
-        removeBtn.id = id
-        removeBtn.innerHTML = "<img src='trash-can-solid.svg'>"; 
+        removeBtn.classList.add("remove-btn", "delete");
+        removeBtn.innerHTML = "<img class='delete' src='trash-can-solid.svg'>"; 
         
         newCard.appendChild(title);
         newCard.appendChild(subtitle);
@@ -330,9 +339,10 @@
         ul.removeChild(li);
     }
 
-    function removeFromArray(id) {
-        const taskIndex = todoListArray.findIndex(task => task.itemId == id);
-        todoListArray.splice(taskIndex, 1);
+    function removeFromArray(array, id) {
+        const objIndex = array.findIndex(task => task.itemId == id);
+        todoListArray.splice(objIndex, 1);
+        console.log(todoListArray);
     }
 
     // Factory function to create projects
@@ -372,6 +382,7 @@
 
 
 
+
     // Event listener for adding a new task
     const addTaskBtn = document.getElementById("addTaskBtn");
     addTaskBtn.addEventListener("click", () => {
@@ -401,7 +412,6 @@
 
         // Save the new project
         projectsArray.push(newProject);
-        console.log(projectsArray);
 
         appendProjectsToCardsContainer(projectTitle.value, dueDate.value, projectId);
 
@@ -599,17 +609,24 @@
             // If clicked icon is the delete button
             } else {
                 const closestLi = e.target.closest("li");
-                const infoBox = closestLi.nextElementSibling;
+                
+                // Ensure sibling element is not a list item
+                let infoBox = null;
+                if (closestLi.nextElementSibling && closestLi.nextElementSibling.tagName !== "LI") {
+                    infoBox = closestLi.nextElementSibling;
+                }    
 
-                // Add a strikethrough but require two taps to delete
+
+                // If strikethrough class exists, proceed with deletion
                 if (closestLi.classList.contains("readyForDeletion")) {
 
                     removeFromContainer(currentIDclicked);
-                    removeFromArray(currentIDclicked);
+                    removeFromArray(todoListArray, currentIDclicked);
                     if(infoBox) infoBox.remove();
 
                 } else {
 
+                    // Add class that adds text strikethrough
                     closestLi.classList.add("readyForDeletion");
                     if(infoBox) infoBox.classList.add("readyForDeletionInfo");
 
@@ -623,6 +640,8 @@
         }
       
     });
+
+
 
     // Event listener for closing the modal when clicking the close button
     closeBtn.forEach(element => {
