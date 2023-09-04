@@ -474,10 +474,13 @@ body {
     overflow: hidden;  
     word-wrap: break-word; 
     text-align: left;
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     background-color: #69a8b5;
     cursor: pointer;
     height: fit-content;
+}
+.card-content:hover:hover {
+    background-color: #7fc2cf;
 }
 
 .card-content h1,
@@ -615,9 +618,10 @@ body {
 
 
 
-
-
-
+/* Spans inside info boxes for home container and projects container */
+.span-key {
+    color: #eec384;
+}
 
 
 
@@ -645,6 +649,7 @@ body {
     75% { transform: translateX(-5px); }
     100% { transform: translateX(0); }
 }
+
 
 
 

@@ -231,7 +231,7 @@
 
         const subtitle = document.createElement("p");
         subtitle.id = id;
-        subtitle.textContent = dueDate;
+        subtitle.innerHTML = `<span class="span-key">due:</span> ${dueDate}`;
 
 
         const removeBtn = document.createElement("span");
@@ -315,7 +315,7 @@
 
                 // Create a paragraph element for each property
                 const p = document.createElement("p");
-                p.innerHTML = `<span style="color: #eec384;">${key}:</span> ${property}`;
+                p.innerHTML = `<span class="span-key">${key}:</span> ${property}`;
                 div.appendChild(p);
             }
         
@@ -391,7 +391,7 @@
         const dueDate = document.getElementById("pDate");
         const taskInputs = document.querySelectorAll(".taskInput");
         const tasks = Array.from(taskInputs).map(input => input.value);
-        const removeTaskBtn = document.querySelectorAll(".removeTaskBtn");
+        const taskList = document.getElementById("taskList");
 
         // Give each project a timestamp id
         const projectId = "card_" + new Date().getTime().toString();
@@ -406,23 +406,21 @@
         appendProjectsToCardsContainer(projectTitle.value, dueDate.value, projectId);
 
 
-        // Remove values and clean task list
+        // Remove values and clear task list
         projectTitle.value = "";
         dueDate.value = "";
 
-        let counter = taskInputs.length;
-        taskInputs.forEach(element => {  
-            // Leave one input bar
-            if (counter > 1) {
-                element.remove();
-                counter--;
-            }
-            element.value = "";
-        });
-        removeTaskBtn.forEach(element => {
-            element.remove();
-        });
+        while (taskList.firstChild) {
+            taskList.firstChild.remove();
+        }
 
+        // Ensure there is at least one task input
+        const firstTask = document.createElement("div");
+        firstTask.className = "task";
+        firstTask.innerHTML = '<input data-id="task_0" type="text" class="taskInput" placeholder="Task name" required>';
+
+        taskList.appendChild(firstTask);
+    
 
         closeModal();
     });
