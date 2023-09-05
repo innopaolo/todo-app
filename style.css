@@ -464,6 +464,15 @@ body {
     border-radius: 4px;
     margin: 40px 14px 80px;
 }
+
+
+@media only screen and (max-width: 500px) {
+    .cards-container {
+        margin: 50px 0 50px;
+    }
+}
+
+
 .card-content {
     position: relative;
     border-radius: 13px 4px 4px 13px;
@@ -492,7 +501,8 @@ body {
     margin-left: 10%;
 }
 
-.remove-btn {
+.remove-btn,
+.edit-btn {
     font-size: 1rem;
     position: absolute;
     bottom: 0;
@@ -500,9 +510,17 @@ body {
     cursor: pointer;
     padding: 5px 6px 0;
 }
-.remove-btn:hover {
+.remove-btn:hover,
+.edit-btn:hover {
     background-color: #494a4b;
 }
+
+.edit-btn {
+    top: 0;
+    right: 0;
+    height: fit-content;
+}
+
 
 #project-modal-form {
     text-align: left;

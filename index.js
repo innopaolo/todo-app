@@ -251,10 +251,15 @@
         const removeBtn = document.createElement("span");
         removeBtn.classList.add("remove-btn", "delete");
         removeBtn.innerHTML = "<img class='delete' src='trash-can-solid.svg'>"; 
+
+        const editProjectBtn = document.createElement("span");
+        editProjectBtn.classList.add("edit-btn", "edit");
+        editProjectBtn.innerHTML = "<img class='edit' src='pen-to-square-solid.svg'>"; 
         
         newCard.appendChild(title);
         newCard.appendChild(subtitle);
         newCard.appendChild(removeBtn);
+        newCard.appendChild(editProjectBtn);
 
         cardsContainer.appendChild(newCard);
     }
