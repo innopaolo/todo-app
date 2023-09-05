@@ -521,6 +521,42 @@ body {
     height: fit-content;
 }
 
+.edit-input-visible {
+    width: 80%;
+    background-color: antiquewhite;
+    padding: 0.2rem 0.5rem;
+    border: solid 3px #ed9383;
+    font-family: "Gochi Hand", cursive;
+    border-radius: 5px;
+    margin-bottom: 0.4rem;
+}
+.edit-input-visible:active,
+.edit-input-visible:focus {
+    outline: none;
+    border: solid 3px red;
+}
+
+@media only screen and (max-width: 500px) {
+    .edit-input-visible {
+        width: 90%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #project-modal-form {
     text-align: left;
@@ -610,7 +646,7 @@ body {
     justify-content: space-between;
     position: absolute;
     bottom: 0;
-    left: 10px;
+    left: 5px;
     width: 100%;
     display: none;
     margin-bottom: -12px;

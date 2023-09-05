@@ -126,7 +126,7 @@
     });
 
 
-
+    let isEditing = false;
 
 
     // Click events within project page
@@ -159,14 +159,41 @@
 
         } else if (divId && divId.includes("card_")) {
 
-            toggleCardLength(card, divId);
+            if (!isEditing) {
+                toggleCardLength(card, divId);
+            }
 
         } else if (e.target.classList.contains("delete")) {
 
-            const idValue = card.getAttribute("id");
-            removeFromArray(projectsArray, idValue);
-            card.remove();      
-            console.log(projectsArray);
+            if (!isEditing) {
+                const idValue = card.getAttribute("id");
+                removeFromArray(projectsArray, idValue);
+                card.remove();      
+                console.log(projectsArray);
+            }
+
+        } else if (e.target.classList.contains("edit")) {
+            
+            if (!isEditing) {
+                isEditing = true;
+
+                // Show tasks if not yet toggled by checking existence of a dynamically generated h3 
+                const ID = card.getAttribute("id");
+
+                const h3 = document.querySelector("h3");
+                if (!h3) {
+                    toggleCardLength(card, ID);
+                }
+
+                // Select all editable content and replace with input
+                const editable = document.querySelectorAll(".editable");
+                editable.forEach(element => {
+                    editMode(element, card);
+                })
+
+                const li = card.querySelectorAll("li");
+                li.forEach(e => alert(e.textContent));
+            }
         }
     });
 
@@ -186,6 +213,49 @@
 
 
 
+
+    function editMode (elementToEdit, parentElement) {
+        const h1 = parentElement.querySelector("h1");
+        const p = parentElement.querySelector("p");
+        const ul = parentElement.querySelectorAll("li");
+
+
+       if (elementToEdit.tagName === "H1") {
+        const h1Input = document.createElement("input");
+        h1Input.className = "edit-input-visible";
+        h1Input.value = elementToEdit.textContent;
+
+        parentElement.replaceChild(h1Input, h1);
+       }
+
+       if (elementToEdit.tagName === "P") {
+        const pInput = document.createElement("input");
+        pInput.type = "date";
+        pInput.className = "edit-input-visible";
+        pInput.value = elementToEdit.textContent;
+
+        parentElement.replaceChild(pInput, p);
+       }
+
+       if (elementToEdit.tagName === "LI") {
+        const task = elementToEdit.textContent;
+
+        const liInput = document.createElement("input");
+        liInput.className = "edit-input-visible";
+        liInput.value = task;
+
+        // Find the correct list item to replace
+        let li = null; 
+        ul.forEach(element => {
+            if (element.textContent === task) {
+                li = element;
+            }     
+        });
+
+        const ulParent = parentElement.querySelector("ul");
+        ulParent.replaceChild(liInput, li);
+       }
+    }
 
 
     function toggleCardLength(card, divId) {
@@ -208,11 +278,12 @@
 
             // Each task appended to a list
             clickedProject.tasks.forEach(element => {
-            const li = document.createElement("li");
-            li.id = divId;
-            li.textContent = element;
-               
-               list.appendChild(li);
+                const li = document.createElement("li");
+                li.id = divId;
+                li.classList.add("editable");
+                li.textContent = element;
+                
+                list.appendChild(li);
             });
 
             // Append list of tasks to card
@@ -241,12 +312,13 @@
         // Create DOM elements for the card content
         const title = document.createElement("h1");
         title.id = id;
+        title.classList.add("editable");
         title.textContent = projectTitle;
 
         const subtitle = document.createElement("p");
         subtitle.id = id;
+        subtitle.classList.add("editable", "edit-date");
         subtitle.innerHTML = `<span class="span-key">due:</span> ${dueDate}`;
-
 
         const removeBtn = document.createElement("span");
         removeBtn.classList.add("remove-btn", "delete");
@@ -256,6 +328,7 @@
         editProjectBtn.classList.add("edit-btn", "edit");
         editProjectBtn.innerHTML = "<img class='edit' src='pen-to-square-solid.svg'>"; 
         
+
         newCard.appendChild(title);
         newCard.appendChild(subtitle);
         newCard.appendChild(removeBtn);
@@ -375,7 +448,7 @@
         taskList.appendChild(taskDiv);
 
 
-        // New remove buttons deletes the adjacent task on click
+        // New remove button deletes the adjacent task on click
         const removeTaskBtn = document.querySelectorAll(".removeTaskBtn");
         
         removeTaskBtn.forEach(element => {
