@@ -226,6 +226,7 @@ body {
 /* Creates a wavy strikethrough on task before confirmed deletion */
 .readyForDeletion {
     text-decoration: line-through wavy orangered;
+    -webkit-text-decoration: line-through wavy orangered;
 }
 .readyForDeletion::after {
     content: "tap again to delete!";
@@ -236,6 +237,7 @@ body {
 }
 .readyForDeletionInfo {
     text-decoration: line-through wavy orangered;
+    -webkit-text-decoration: line-through wavy orangered;
 }
 
 
