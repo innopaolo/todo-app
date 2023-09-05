@@ -64,6 +64,10 @@
         modalInput.value = "";
         modalDate.value = "";
 
+        // If info boxes are open, close it (to show new submitted info on reopening)
+        const infoBox = document.querySelectorAll(".info-box");
+        infoBox.forEach(element => element.remove());
+
         closeModal();
     });
 
@@ -302,6 +306,8 @@
         if (taskObject) {
             if (taskObject.description) {
                 modalInput.value = taskObject.description;
+            } else {
+                modalInput.value = "";
             }
         }
     }
