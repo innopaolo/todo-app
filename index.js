@@ -186,13 +186,27 @@
                 }
 
                 // Select all editable content and replace with input
-                const editable = document.querySelectorAll(".editable");
+                const editable = card.querySelectorAll(".editable");
                 editable.forEach(element => {
                     editMode(element, card);
                 })
 
-                const li = card.querySelectorAll("li");
-                li.forEach(e => alert(e.textContent));
+                // Button that edits projects array and card content on submit
+                const submitEdit = document.createElement("button");
+                submitEdit.id = "submit-edit";
+                
+                // submitEdit.setAttribute("form", "editForm");
+                // submitEdit.setAttribute("type", "submit"); // Form validation doesnt work
+
+                submitEdit.className = "button";
+                submitEdit.innerHTML = "<span>Submit</span>";
+
+                card.appendChild(submitEdit);
+
+                submitEdit.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    handleSubmitEdit(card, ID); 
+                });
             }
         }
     });
@@ -222,7 +236,9 @@
 
        if (elementToEdit.tagName === "H1") {
         const h1Input = document.createElement("input");
+        h1Input.id = "h1";
         h1Input.className = "edit-input-visible";
+        h1Input.required = true;
         h1Input.value = elementToEdit.textContent;
 
         parentElement.replaceChild(h1Input, h1);
@@ -230,9 +246,11 @@
 
        if (elementToEdit.tagName === "P") {
         const pInput = document.createElement("input");
+        pInput.id = "p";
         pInput.type = "date";
         pInput.className = "edit-input-visible";
-        pInput.value = elementToEdit.textContent;
+        pInput.required = true;
+        // pInput.value = elementToEdit.textContent // Doesnt work - to be fixed*
 
         parentElement.replaceChild(pInput, p);
        }
@@ -241,7 +259,8 @@
         const task = elementToEdit.textContent;
 
         const liInput = document.createElement("input");
-        liInput.className = "edit-input-visible";
+        liInput.classList.add("edit-input-visible", "li");
+        liInput.required = true;
         liInput.value = task;
 
         // Find the correct list item to replace
@@ -256,6 +275,59 @@
         ulParent.replaceChild(liInput, li);
        }
     }
+
+
+
+    function handleSubmitEdit(card, id) {
+        const editedH1 = card.querySelector("#h1");
+        const editedP = card.querySelector("#p");
+        const editedUl = card.querySelectorAll(".li");
+        const liArray = Array.from(editedUl).map(li => li.value);
+
+        // Form validation
+        const isEmpty = liArray.some(value => value === "");
+        if (!editedH1.value || !editedP.value || isEmpty) {
+            alert("Yarr! Better there be no empty fields!");
+            return;
+        }
+
+        const foundProject = projectsArray.find(object => object.itemId === id);
+
+        // Replace project properties with new values from user edit
+        foundProject.title = editedH1.value;
+        foundProject.date = editedP.value;
+        foundProject.tasks = liArray;
+        
+        console.log(editedP.value);
+        // Change back input elements to original structure but with new values
+        const h1 = document.createElement("h1");
+        h1.id = id;
+        h1.classList.add("editable");
+        h1.textContent = editedH1.value;
+        card.replaceChild(h1, editedH1);
+
+        const p = document.createElement("p");
+        p.id = id;
+        p.classList.add("editable", "edit-date");
+        p.innerHTML = `<span class="span-key">due:</span> ${editedP.value}`;
+        card.replaceChild(p, editedP);
+
+        const editedUlParent = document.querySelector("ul");
+        editedUl.forEach(input => {
+            const li = document.createElement("li");
+            li.id = id;
+            li.classList.add("editable");
+            li.textContent = input.value;
+            
+            editedUlParent.replaceChild(li, input);
+        });
+
+        // Collapse card to prevent duplicate elements every edit
+        isEditing = false;
+        toggleCardLength(card, id);
+    }   
+
+    
 
 
     function toggleCardLength(card, divId) {
@@ -298,13 +370,18 @@
                     ul.remove();
                 }
             });
+
+            // If edit button exists, remove it too
+            const button = card.querySelector("button");
+            if (button) button.remove();
         }     
     }
 
 
+
     function appendProjectsToCardsContainer(projectTitle, dueDate, id) {
         const cardsContainer = document.querySelector(".cards-container");
-        
+
         const newCard = document.createElement("div");
         newCard.className = "card-content";
         newCard.id = id;
@@ -334,8 +411,15 @@
         newCard.appendChild(removeBtn);
         newCard.appendChild(editProjectBtn);
 
-        cardsContainer.appendChild(newCard);
+        // Wrap newCard in a form for when edit mode is activated
+        const form = document.createElement("form");
+        // form.id = "editForm"; // Form validation through id reference doesnt work
+        form.appendChild(newCard);
+
+        cardsContainer.appendChild(form);
     }
+
+
 
     function appendToContainer(title, itemId) {
         const li = document.createElement("li");
@@ -495,6 +579,7 @@
 
         // Save the new project
         projectsArray.push(newProject);
+        console.log(projectsArray);
 
         appendProjectsToCardsContainer(projectTitle.value, dueDate.value, itemId);
 
