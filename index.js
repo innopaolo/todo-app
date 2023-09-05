@@ -213,6 +213,9 @@
 
 
     addProjectCard.addEventListener("click", (e) => {
+        if (isEditing) {
+            return;
+        }
         const clickedElement = e.target.getAttribute("id");
         openModal(clickedElement);
     })
