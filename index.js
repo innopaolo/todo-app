@@ -13,7 +13,6 @@
 
 
     // Unique ID counter for each list item generated
-    let taskId = 1 
     let currentIDclicked;
 
     // Submit form for initial task page
@@ -22,14 +21,13 @@
 
         // Remove trailing whitespace if any
         let title = input.value.trim();
-        let itemId = taskId;
+        let itemId = new Date().getMilliseconds().toString();
 
         appendToContainer(title, itemId);
         addToArray(title, itemId);
         saveToLocalStorage(todoListArray, projectsArray, darkTheme);
 
 
-        taskId++
         input.value = "";
     });
 
