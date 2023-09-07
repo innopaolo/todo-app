@@ -12,7 +12,6 @@
 
 
 
-
     // Unique ID counter for each list item generated
     let taskId = 1 
     let currentIDclicked;
@@ -27,6 +26,7 @@
 
         appendToContainer(title, itemId);
         addToArray(title, itemId);
+        saveToLocalStorage(todoListArray, projectsArray);
 
 
         taskId++
@@ -68,6 +68,8 @@
         const infoBox = document.querySelectorAll(".info-box");
         infoBox.forEach(element => element.remove());
 
+        saveToLocalStorage(todoListArray, projectsArray);
+
         closeModal();
     });
 
@@ -90,8 +92,8 @@
     const footer = document.querySelector(".footer");
     const addProjectCard = document.querySelector(".add-project-card");
 
-    const removedChildren = [];
-    const removedProjectsArray = [];
+    let removedChildren = [];
+    // let removedProjectsArray = [];
 
     goToProjectPage.addEventListener("click", () => {
         
@@ -111,15 +113,31 @@
         returnBtn.innerHTML = "<div id='return' class='far fa-hand-point-left'></div>";
 
         projectContainer.appendChild(returnBtn);
-
+        projectContainer.appendChild(cardsContainer);
 
         // Re-populate project page with project cards if any
-        removedProjectsArray.forEach(project => cardsContainer.appendChild(project));
+        if(projectsArray) {
+            for (let i = 0; i < projectsArray.length; i++) {
+                
+                const project = projectsArray[i];
+                console.log(project);
+                console.log(projectsArray.length);
+
+                // Note: array have inexplicably undefined objects, presumably
+                // coming from save local storage function.
+                // This if block prevents any further loop on undefined elements 
+                if (project === undefined) {
+                    break;
+                }
+
+                appendProjectsToCardsContainer(project.title, project.date, project.itemId);
+            }
+        }
+        // removedProjectsArray.forEach(project => cardsContainer.appendChild(project));
 
         // Show non-project elements
         projectContainer.appendChild(footer);
         projectContainer.appendChild(addProjectCard);
-        projectContainer.appendChild(cardsContainer);
         footer.style.display = "block";
         addProjectCard.style.display = "block";
 
@@ -141,7 +159,7 @@
             const cardsContainer = document.querySelector(".cards-container");
 
             while (cardsContainer.firstChild) {
-                removedProjectsArray.push(cardsContainer.firstChild);
+                // removedProjectsArray.push(cardsContainer.firstChild);
                 cardsContainer.removeChild(cardsContainer.firstChild);
             }
 
@@ -170,6 +188,7 @@
                 removeFromArray(projectsArray, idValue);
                 card.remove();      
                 console.log(projectsArray);
+                saveToLocalStorage(todoListArray, projectsArray);
             }
 
         } else if (e.target.classList.contains("edit")) {
@@ -205,7 +224,8 @@
 
                 submitEdit.addEventListener("click", (e) => {
                     e.preventDefault();
-                    handleSubmitEdit(card, ID); 
+                    handleSubmitEdit(card, ID);
+                    saveToLocalStorage(todoListArray, projectsArray); 
                 });
             }
         }
@@ -301,7 +321,7 @@
         foundProject.date = editedP.value;
         foundProject.tasks = liArray;
         
-        console.log(editedP.value);
+
         // Change back input elements to original structure but with new values
         const h1 = document.createElement("h1");
         h1.id = id;
@@ -414,12 +434,13 @@
         newCard.appendChild(removeBtn);
         newCard.appendChild(editProjectBtn);
 
-        // Wrap newCard in a form for when edit mode is activated
-        const form = document.createElement("form");
+        // (???) Wrap newCard in a form for when edit mode is activated
+        // const form = document.createElement("form");
         // form.id = "editForm"; // Form validation through id reference doesnt work
-        form.appendChild(newCard);
+        // form.appendChild(newCard);
 
-        cardsContainer.appendChild(form);
+        
+        cardsContainer.appendChild(newCard);
     }
 
 
@@ -557,12 +578,12 @@
     const addTaskBtn = document.getElementById("addTaskBtn");
     addTaskBtn.addEventListener("click", () => {
         addTaskInput();
-        updateTheme();
+        updateProjectTasksTheme();
     });
 
     // Event listener for form submission
     const projectModalForm = document.getElementById("project-modal-form");
-    const projectsArray = [];
+    let projectsArray = [];
 
     projectModalForm.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -585,6 +606,7 @@
         console.log(projectsArray);
 
         appendProjectsToCardsContainer(projectTitle.value, dueDate.value, itemId);
+        saveToLocalStorage(todoListArray, projectsArray);
 
 
         // Remove values and clear task list
@@ -617,7 +639,25 @@
 
 
     // Toggle light and dark theme
-    function updateTheme() {
+    const themeBtn = document.getElementById("theme-btn");
+    const container = document.querySelector(".container");
+    const formInput = document.querySelector(".form-input");
+    const modalTxtarea = document.getElementById("description");
+    const modalContent = document.querySelectorAll(".modal-content");
+    const modalSubmitImage = document.querySelectorAll(".modal-image");
+    const taskInputs = document.querySelectorAll(".taskInput");
+    const squigglyArrow = document.getElementById("squiggly-arrow");
+
+    let darkTheme = false;
+
+
+    themeBtn.addEventListener("click", () => {
+        darkTheme = !darkTheme;
+        toggleTheme();
+    });
+
+
+    function updateProjectTasksTheme() {
         const taskInputs = document.querySelectorAll(".taskInput");
         taskInputs.forEach(element => {
             element.classList.toggle("changeThemeInput", darkTheme);
@@ -630,21 +670,11 @@
         });
     }
 
-    const themeBtn = document.getElementById("theme-btn");
-    const container = document.querySelector(".container");
-    const formInput = document.querySelector(".form-input");
-    const modalTxtarea = document.getElementById("description");
-    const modalContent = document.querySelectorAll(".modal-content");
-    const modalSubmitImage = document.querySelectorAll(".modal-image");
-    const taskInputs = document.querySelectorAll(".taskInput");
-    const squigglyArrow = document.getElementById("squiggly-arrow");
 
-    let darkTheme = false;
+    function toggleTheme() {
+        saveToLocalStorage(todoListArray, projectsArray, darkTheme);
 
-    themeBtn.addEventListener("click", () => {
-        darkTheme = !darkTheme;
-
-        updateTheme();
+        updateProjectTasksTheme();
 
         // Default class "fa-moon" switches to "fa-sun" on toggle
         themeBtn.classList.toggle("fa-sun");
@@ -696,7 +726,8 @@
             });
             squigglyArrow.src = "squiggly-arrow.png";
         }
-    });
+    }
+
 
 
 
@@ -794,6 +825,7 @@
                     removeFromContainer(currentIDclicked);
                     removeFromArray(todoListArray, currentIDclicked);
                     if(infoBox) infoBox.remove();
+                    saveToLocalStorage(todoListArray, projectsArray);
 
                 } else {
 
@@ -825,5 +857,65 @@
             closeModal();
         }
     });
+
+
+
+
+
+    function saveToLocalStorage(todos, projects, darkTheme) {
+        const data = {
+                todoListArray: todos,
+                projectsArray: projects,
+                darkTheme: darkTheme,
+        };
+
+        localStorage.setItem("todoAppData", JSON.stringify(data));
+    }
+    
+    function loadFromLocalStorage() {
+        
+        // Error handling to ensure app doesnt crash if data is corrupted or empty
+        try {
+            const data = localStorage.getItem("todoAppData");
+
+            if (data) {
+                const parsedData = JSON.parse(data);
+                return parsedData;
+            }
+
+        } catch (error) {
+            console.error("Error loading data from local storage:", error);
+        }
+        return null;
+    }
+
+    // Function to initialize your web app with loaded data
+    function initializeApp() {
+        const savedData = loadFromLocalStorage();
+
+        if(savedData) {
+            todoListArray = savedData.todoListArray;
+            projectsArray = savedData.projectsArray;
+            darkTheme = savedData.darkTheme;
+
+            // Load last used theme
+            if (darkTheme) {
+                toggleTheme();
+            }
+
+            // Load saved data for "today" tasks container 
+            appendToContainer(todoListArray.title, todoListArray.itemId);
+            addToArray(todoListArray.title, todoListArray.itemId);
+            addModalInfoToTaskObject(todoListArray.itemId, todoListArray.description, todoListArray.dueDate);
+
+            // Load saved data for projects container
+            projectsArray.push(projectsArray.title, projectsArray.date, projectsArray.tasks, projectsArray.itemId);
+        }
+    }
+
+    window.addEventListener("load", () => {
+        initializeApp();
+    });
+
 
 })();
