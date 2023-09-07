@@ -799,9 +799,7 @@
                     // If the span doesn't exist, create and append it
                     const span = document.createElement("span");
                     span.style.color = "#1a82a9"; // Initial color for medium priority
-                    span.style.fontWeight = "900";
-                    span.style.display = "inline";
-                    span.textContent = "⚠️";
+                    span.classList.add("fas", "fa-exclamation-triangle");
                     closestSpan.appendChild(span);
                 }
             // If clicked icon is the delete button

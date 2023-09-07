@@ -162,7 +162,9 @@ body {
 }
 
 .todoList li span {
-    margin-left: 0.8rem;
+    margin-left: 1.1rem;
+    -webkit-margin-left: 1.1rem;
+    -moz-margin-left: 1.1rem;
     cursor: pointer;
     word-wrap: break-word;
     display: inline-block;
@@ -175,9 +177,8 @@ body {
 .todoList li::before {
     position: absolute;
     left: 0;
-    content: "👇";
-    font-weight: 600;
-    color: #1f5f76;
+    margin-top: 15px;
+    content: url('hand-point-down.svg');
     cursor: pointer;
 }
 
@@ -517,17 +518,32 @@ body {
     right: 0;
     cursor: pointer;
     padding: 5px 6px 0;
+    -moz-font-size: 1rem;
+    -moz-position: absolute;
+    -moz-bottom: 0;
+    -moz-right: 0;
+    -moz-cursor: pointer;
+    -moz-padding: 5px 6px 0;
 }
 .remove-btn:hover,
 .edit-btn:hover {
     background-color: #494a4b;
+    -moz-background-color: #494a4b;
 }
 
 .edit-btn {
     top: 0;
     right: 0;
     height: fit-content;
+    height: -moz-fit-content;
 }
+
+
+
+
+
+
+
 
 .edit-input-visible {
     width: 80%;
@@ -591,12 +607,19 @@ body {
     margin-top: 20px;
     position: relative;
     width: fit-content;
+    -moz-margin-top: 20px;
+    -moz-position: relative;
+    -moz-width: -moz-fit-content;
 }
 .down-arrow-div img {
     width: 50%;
     position: absolute;
     bottom: -30px;
     right: -50px;
+    -moz-width: 50%;
+    -moz-position: absolute;
+    -moz-bottom: -30px;
+    -moz-right: -50px;
 }
 
 #project-modal-form .task input {
@@ -681,10 +704,35 @@ body {
 
 
 
+
+
+
+
+
 /* Spans inside info boxes for home container and projects container */
 .span-key {
     color: #eec384;
 }
+
+
+
+
+
+
+
+
+
+
+/* Font awesome icons (folder and return finger) */
+.fa-folder-plus,
+.fa-hand-point-left {
+    color: #3d3e3f;
+}
+
+
+
+
+
 
 
 
