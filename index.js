@@ -26,7 +26,7 @@
 
         appendToContainer(title, itemId);
         addToArray(title, itemId);
-        saveToLocalStorage(todoListArray, projectsArray);
+        saveToLocalStorage(todoListArray, projectsArray, darkTheme);
 
 
         taskId++
@@ -68,7 +68,7 @@
         const infoBox = document.querySelectorAll(".info-box");
         infoBox.forEach(element => element.remove());
 
-        saveToLocalStorage(todoListArray, projectsArray);
+        saveToLocalStorage(todoListArray, projectsArray, darkTheme);
 
         closeModal();
     });
@@ -120,13 +120,12 @@
             for (let i = 0; i < projectsArray.length; i++) {
                 
                 const project = projectsArray[i];
-                console.log(project);
-                console.log(projectsArray.length);
 
                 // Note: array have inexplicably undefined objects, presumably
                 // coming from save local storage function.
-                // This if block prevents any further loop on undefined elements 
-                if (project === undefined) {
+                // This if block prevents any further loop on empty elements
+                // [SOLVED! See commits on local storage] 
+                if (project === undefined || project === null) {
                     break;
                 }
 
@@ -187,8 +186,7 @@
                 const idValue = card.getAttribute("id");
                 removeFromArray(projectsArray, idValue);
                 card.remove();      
-                console.log(projectsArray);
-                saveToLocalStorage(todoListArray, projectsArray);
+                saveToLocalStorage(todoListArray, projectsArray, darkTheme);
             }
 
         } else if (e.target.classList.contains("edit")) {
@@ -225,7 +223,7 @@
                 submitEdit.addEventListener("click", (e) => {
                     e.preventDefault();
                     handleSubmitEdit(card, ID);
-                    saveToLocalStorage(todoListArray, projectsArray); 
+                    saveToLocalStorage(todoListArray, projectsArray, darkTheme); 
                 });
             }
         }
@@ -606,7 +604,7 @@
         console.log(projectsArray);
 
         appendProjectsToCardsContainer(projectTitle.value, dueDate.value, itemId);
-        saveToLocalStorage(todoListArray, projectsArray);
+        saveToLocalStorage(todoListArray, projectsArray, darkTheme);
 
 
         // Remove values and clear task list
@@ -825,7 +823,7 @@
                     removeFromContainer(currentIDclicked);
                     removeFromArray(todoListArray, currentIDclicked);
                     if(infoBox) infoBox.remove();
-                    saveToLocalStorage(todoListArray, projectsArray);
+                    saveToLocalStorage(todoListArray, projectsArray, darkTheme);
 
                 } else {
 
@@ -863,12 +861,13 @@
 
 
     function saveToLocalStorage(todos, projects, darkTheme) {
+        
         const data = {
                 todoListArray: todos,
                 projectsArray: projects,
                 darkTheme: darkTheme,
         };
-
+        console.log(data);
         localStorage.setItem("todoAppData", JSON.stringify(data));
     }
     
@@ -880,6 +879,7 @@
 
             if (data) {
                 const parsedData = JSON.parse(data);
+                console.log(parsedData);
                 return parsedData;
             }
 
@@ -889,7 +889,7 @@
         return null;
     }
 
-    // Function to initialize your web app with loaded data
+    // Function to initialize web app with loaded data
     function initializeApp() {
         const savedData = loadFromLocalStorage();
 
@@ -903,13 +903,16 @@
                 toggleTheme();
             }
 
-            // Load saved data for "today" tasks container 
-            appendToContainer(todoListArray.title, todoListArray.itemId);
-            addToArray(todoListArray.title, todoListArray.itemId);
-            addModalInfoToTaskObject(todoListArray.itemId, todoListArray.description, todoListArray.dueDate);
+            // Load saved data for "today" tasks container
+            if (todoListArray) {
+                todoListArray.forEach(element => {
+                    appendToContainer(element.title, element.itemId);
 
-            // Load saved data for projects container
-            projectsArray.push(projectsArray.title, projectsArray.date, projectsArray.tasks, projectsArray.itemId);
+                    if (element.dueDate !== undefined) {
+                        addModalInfoToTaskObject(element.itemId, element.description, element.dueDate);
+                    }
+                });
+            } 
         }
     }
 
