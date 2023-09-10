@@ -7,7 +7,7 @@
 }
 
 body {
-    background-image: url("one-piece-bg.jpg");
+    background-image: url("./images/one-piece-bg.jpg");
     background-size: cover;
     min-height: 70vh;  /*  Prevents the container div from totally centering vertically */
     padding: 1rem;
@@ -34,7 +34,7 @@ body {
     max-width: 600px;
     min-width: 280px;
     background: #f1f5f8;
-    background-image: url("parchment.jpeg");
+    background-image: url("./images/parchment.jpeg");
     background-size: cover;
     border-radius: 10px;
     box-shadow: 5px 5px 5px black;
@@ -120,7 +120,7 @@ body {
     border-radius: 5px;
     box-shadow: 0 2px 0 #494a4b;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    background-image: url("lines.gif");
+    background-image: url("./images/lines.gif");
     background-color: #ed9383;
     cursor: pointer;
 }
@@ -178,7 +178,7 @@ body {
     position: absolute;
     left: 0;
     margin-top: 15px;
-    content: url('hand-point-down.svg');
+    content: url('./images/hand-point-down.svg');
     cursor: pointer;
 }
 
@@ -424,7 +424,7 @@ body {
     padding-bottom: 3px;
     border-radius: 5px;
     box-shadow: 0 2px 0 #494a4b;
-    background-image: url("lines.gif");
+    background-image: url("./images/lines.gif");
     background-color: #69a8b5;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
@@ -661,6 +661,11 @@ body {
 .prj-btn.removeTaskBtn span {
     font-size: 0.7rem;
 }
+.prj-btn.removeTaskBtn:active,
+.prj-btn.removeTaskBtn:focus {
+    height: 10px;
+}
+
 
 
 
@@ -777,7 +782,7 @@ body {
 }
 
 .changeThemeContainer {
-    background-image: url("dark-mode-bg.jpg");
+    background-image: url("./images/dark-mode-bg.jpg");
 }
 
 .changeThemeInput {
@@ -785,7 +790,7 @@ body {
 }
 
 .changeThemeModal {
-    background-image: url("modal-bg-dark.jpg");
+    background-image: url("./images/modal-bg-dark.jpg");
     border: 1px solid antiquewhite;
     color: #eee;
 }
