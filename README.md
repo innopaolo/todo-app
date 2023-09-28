@@ -4,9 +4,9 @@ This web application allows you to manage your tasks and projects efficiently. Y
 
 # Preview
 
-<img src="./images/todolist-preview.png" alt="Example Image" width="700" />
+<img src="./images/todolist-preview.png" alt="Main page" width="700" />
 
-<img src="./images/darktheme-preview" alt="Example Image" width="700" />
+<img src="./images/darktheme-preview.png" alt="Projects page dark theme" width="700" />
 
 Check out the live demo [here!](https://innopaolo.github.io/todo-app/)
 
@@ -44,7 +44,7 @@ Check out the live demo [here!](https://innopaolo.github.io/todo-app/)
 
 My biggest struggle was when it was time to break up the code into their own separate modules. I had trouble trying to separate certain functions that were tightly coupled, and had to refactor extensively. 
 
-I decided not to merge the webpack version to the main branch, as at the time, I was also having trouble trying to correctly bundle the images together with the code. I would eventually solve this problem in my next project, the Weather app. It turns out that I simply needed to create a generator property for my asset/resource module in the webpack config file.
+I decided not to merge the webpack version to the main branch, as at the time, I was also having trouble trying to correctly bundle the images together with the code. I would eventually resolve this issue in my subsequent project, the Weather app. It turns out that I simply needed to create a generator property for my asset/resource module in the webpack config file.
 
 My biggest takeaway from my struggles is to focus on creating pure functions from the very beginning (as much as possible) and be conscious of when my code starts straying from the SOLID principle. I would eventually learn in a later project - Battleship - to also focus on test driven development.
 
@@ -61,16 +61,17 @@ My biggest takeaway from my struggles is to focus on creating pure functions fro
 - 'Today tasks' can be bundled up into a project
 - User Authentication
 - Ability to set reminders
-- Sorting and Filtering tasks
-- Data sync
+- Implementing task sorting and filtering
+- Data synchronization
 - Improved UI/UX
 
 ## Acknowledgments
 
-- Gnochi Font from [Google Fonts](https://fonts.google.com/)
-- Icons from [Font Awesome](https://fontawesome.com/)
-- Manga background from [Wallpapersden](https://wallpapersden.com/)
-- Various assets from [here](https://www.pngwing.com/en/free-png-zoyqj), [here](https://custom-cursor.com/en/collection/one-piece/one-piece-usopp-slingshot), and [here](http://www.kindpng.com/free/one-piece-luffy/). 
+- Gnochi Font from [Google Fonts](https://fonts.google.com/).
+- Icons from [Font Awesome](https://fontawesome.com/).
+- Manga background from [Wallpapersden](https://wallpapersden.com/).
+- Various assets from [here](https://www.pngwing.com/en/free-png-zoyqj), [here](https://custom-cursor.com/en/collection/one-piece/one-piece-usopp-slingshot), and [here](http://www.kindpng.com/free/one-piece-luffy/).
+
 
 
 Thank you for reading all the way here. Have a great day! 
